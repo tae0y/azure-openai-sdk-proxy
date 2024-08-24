@@ -1,5 +1,6 @@
 ﻿@using AzureOpenAIProxy.PlaygroundApp.Clients
 @inject IOpenAIApiClient Api
+@inject IConfiguration config
 
 <div class="container">
     <h3>Chat Window</h3>
@@ -34,18 +35,26 @@
     private string? userPrompt;
     private string? assistantMessage;
     private string? userInput;
-
+    
     private async Task SendAsync()
     {
         userPrompt = userInput;
 
+        // get endpoint, apiKey, deploymentName, maxTokens, temperature, systemPrompt, userInput from configuration
+        // which is sent from AppHost with below code
+        /* builder.AddProject<Projects.AzureOpenAIProxy_PlaygroundApp>("playgroundapp")
+       .WithExternalHttpEndpoints()
+       .WithEnvironment("OpenAI__Endpoint", config["OpenAI:Endpoint"])
+       .WithEnvironment("OpenAI__ApiKey", config["OpenAI:ApiKey"])
+       .WithEnvironment("OpenAI__DeploymentNames", config["OpenAI:DeploymentNames"])
+       .WithReference(apiapp); */
         try
         {
             var options = new OpenAIApiClientOptions()
             {
-                Endpoint = endpoint,
-                ApiKey = apiKey,
-                DeploymentName = deploymentName,
+                Endpoint = config["OpenAI:Endpoint"],
+                ApiKey = config["OpenAI:ApiKey"],
+                DeploymentName = config["OpenAI:DeploymentName"],
                 MaxTokens = maxTokens,
                 Temperature = temperature,
                 SystemPrompt = systemPrompt,

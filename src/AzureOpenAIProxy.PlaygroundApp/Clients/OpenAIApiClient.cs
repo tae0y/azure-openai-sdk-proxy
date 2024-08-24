@@ -26,7 +26,7 @@ public class OpenAIApiClient : IOpenAIApiClient
     /// <inheritdoc />
     public async Task<string> CompleteChatAsync(OpenAIApiClientOptions clientOptions)
     {
-        var endpoint = new Uri($"{clientOptions.Endpoint!.TrimEnd('/')}/api");
+        var endpoint = new Uri($"{clientOptions.Endpoint!.TrimEnd('/')}");
         var credential = new AzureKeyCredential(clientOptions.ApiKey!);
         var openai = new AzureOpenAIClient(endpoint, credential);
         var chat = openai.GetChatClient(clientOptions.DeploymentName);
